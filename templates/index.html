@@ -4,25 +4,172 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Checkerboard Generator</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #1e1e2f; /* Dark purple background */
+            color: #e0e0ff; /* Soft white text */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Header styling */
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #a29bfe; /* Light purple text */
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 1.2s ease-in-out;
+        }
+
+        /* Form styling */
+        form {
+            background: #2a2a40; /* Slightly lighter dark background */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            animation: slideUp 1s ease-in-out;
+        }
+
+        label {
+            font-size: 1.2rem;
+            color: #b3b3ff; /* Muted light purple */
+        }
+
+        /* Color Picker Styling */
+        .color-picker-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .color-preview {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 3px solid #444;
+            cursor: pointer;
+            background-color: #ff0000; /* Initial color */
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .color-preview:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px #6c5ce7;
+        }
+
+        #colorPicker {
+            display: none; /* Hide default color picker */
+        }
+
+        #hexCode {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #444;
+            background-color: #3a3a5a;
+            color: #e0e0ff;
+            font-size: 1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            flex-grow: 1;
+        }
+
+        #hexCode:focus {
+            outline: none;
+            transform: scale(1.05);
+            box-shadow: 0 0 10px #6c5ce7;
+        }
+
+        button {
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            background-color: #6c5ce7;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #a29bfe;
+            transform: translateY(-2px);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 <body>
     <h1>Welcome to the Checkerboard Generator!</h1>
     <form action="/checkerboard" method="get">
-        <label for="color">Choose a color:</label>
-        <input type="color" id="colorPicker" name="color" value="#ff0000" required>
-        <input type="text" id="hexCode" name="color" value="#ff0000" required>
+        <div class="color-picker-container">
+            <label for="colorPicker">Choose a color:</label>
+            <div class="color-preview" id="colorPreview"></div>
+            <input type="color" id="colorPicker" name="color" value="#ff0000" required>
+            <input type="text" id="hexCode" name="colorHex" value="#ff0000" required>
+        </div>
         <button type="submit">Generate Checkerboard</button>
     </form>
     <script>
         const colorPicker = document.getElementById('colorPicker');
+        const colorPreview = document.getElementById('colorPreview');
         const hexCode = document.getElementById('hexCode');
-        
-        colorPicker.addEventListener('input', (e) => {
+
+        // Open color picker when preview is clicked
+        colorPreview.addEventListener('click', () => {
+            colorPicker.click();
+        });
+
+        // Update preview and hex code when a color is chosen
+        colorPicker.addEventListener('input', () => {
+            colorPreview.style.backgroundColor = colorPicker.value;
             hexCode.value = colorPicker.value;
         });
-        hexCode.addEventListener('input', (e) => {
+
+        // Update preview and color picker when hex code is edited
+        hexCode.addEventListener('input', () => {
             if (/^#[0-9A-Fa-f]{6}$/.test(hexCode.value)) {
                 colorPicker.value = hexCode.value;
+                colorPreview.style.backgroundColor = hexCode.value;
             }
         });
     </script>
