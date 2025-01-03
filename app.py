@@ -32,8 +32,8 @@ def checkerboard():
     hex_code = request.args.get("color", "#ff0000")
     try:
         # Validate hex code
-        if len(hex_code) != 6 or any(c not in "0123456789abcdefABCDEF" for c in hex_code[1:]):
-            return "Invalid color code! Use format: RRGGBB", 400
+        if len(hex_code) != 7 or not hex_code.startswith("#") or any(c not in "0123456789abcdefABCDEF" for c in hex_code[1:]):
+            return "Invalid color code! Use format: #RRGGBB", 400
 
         # Generate image
         img = generate_checkerboard_image(hex_code)
