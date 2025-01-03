@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkerboard Generator</title>
+</head>
+<body>
+    <h1>Welcome to the Checkerboard Generator!</h1>
+    <form action="/checkerboard" method="get">
+        <label for="color">Choose a color:</label>
+        <input type="color" id="colorPicker" name="color" value="#ff0000" required>
+        <input type="text" id="hexCode" name="color" value="#ff0000" required>
+        <button type="submit">Generate Checkerboard</button>
+    </form>
+    <script>
+        const colorPicker = document.getElementById('colorPicker');
+        const hexCode = document.getElementById('hexCode');
+        
+        colorPicker.addEventListener('input', (e) => {
+            hexCode.value = colorPicker.value;
+        });
+        hexCode.addEventListener('input', (e) => {
+            if (/^#[0-9A-Fa-f]{6}$/.test(hexCode.value)) {
+                colorPicker.value = hexCode.value;
+            }
+        });
+    </script>
+</body>
+</html>
