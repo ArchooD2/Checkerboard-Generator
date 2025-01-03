@@ -36,20 +36,22 @@ def checkerboard():
     """Generate and download the checkerboard image."""
     hex_color1 = request.args.get("color1", "#ffffff")
     hex_color2 = request.args.get("color2")  # Default is None
+    use_second_color = request.args.get("use_second_color")  # Checkbox value
     
     try:
-        # Validate hex color codes
         for color in [hex_color1, hex_color2]:
             if color and (len(color) != 7 or not color.startswith("#") or any(c not in "0123456789abcdefABCDEF" for c in color[1:])):
                 return "Invalid color code! Use format: #RRGGBB", 400
 
-        # Generate image
+        # Only use the second color if the checkbox is checked
+        if use_second_color != "on":
+            hex_color2 = None
+
         img = generate_checkerboard_image(hex_color1, hex_color2)
         img_buffer = BytesIO()
         img.save(img_buffer, format="PNG")
         img_buffer.seek(0)
 
-        # Download image
         file_name = f"checkerboard_{hex_color1[1:]}"
         if hex_color2:
             file_name += f"_{hex_color2[1:]}"
@@ -62,6 +64,7 @@ def checkerboard():
         )
     except Exception as e:
         return f"Error: {e}", 500
+
 
 
 if __name__ == "__main__":

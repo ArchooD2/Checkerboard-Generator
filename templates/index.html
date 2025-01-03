@@ -161,7 +161,7 @@
             <input type="text" id="hexCode" name="colorHex1" value="#ff0000" required>
         </div>
         <label>
-            <input type="checkbox" id="secondColorCheckbox"> Add a second color
+            <input type="checkbox" id="secondColorCheckbox" name="use_second_color"> Add a second color
         </label>
         <div id="secondColorContainer" class="color-picker-container hidden">
             <label for="colorPicker2">Choose a second color:</label>
@@ -182,7 +182,6 @@
         const colorPreview2 = document.getElementById('colorPreview2');
         const hexCode2 = document.getElementById('hexCode2');
 
-        // Animate visibility of the second color picker
         secondColorCheckbox.addEventListener('change', () => {
             if (secondColorCheckbox.checked) {
                 secondColorContainer.classList.remove('hidden');
@@ -193,7 +192,6 @@
             }
         });
 
-        // Update preview and hex code for the first color
         colorPreview.addEventListener('click', () => colorPicker.click());
         colorPicker.addEventListener('input', () => {
             colorPreview.style.backgroundColor = colorPicker.value;
@@ -206,7 +204,6 @@
             }
         });
 
-        // Update preview and hex code for the second color
         colorPreview2.addEventListener('click', () => colorPicker2.click());
         colorPicker2.addEventListener('input', () => {
             colorPreview2.style.backgroundColor = colorPicker2.value;
