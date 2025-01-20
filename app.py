@@ -46,7 +46,7 @@ def chevron():
     stripe_width = int(request.args.get("stripe_width", 20))
 
     try:
-        img = generate_chevron_image(hex_color1, hex_color2, stripe_width=stripe_width)
+        img = generate_chevron_image(hex_color1, hex_color2, stripe_width=stripe_width, rotation=90)
         img_buffer = BytesIO()
         img.save(img_buffer, format="PNG")
         img_buffer.seek(0)
