@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta property="og:title" content="Checkerboard Generator">
-    <meta property="og:description" content="Generate your own colorful checkerboard pattern with ease.">
+    <meta property="og:title" content="Pattern Generator">
+    <meta property="og:description" content="Generate colorful patterns including checkerboards, chevrons, and diagonals.">
     <meta property="og:image" content="https://ibb.co/dbTmYnC">
-    <meta property="og:url" content="https://checkerboard-generator.onrender.com">
+    <meta property="og:url" content="https://pattern-generator.onrender.com">
     <meta name="theme-color" content="#a600ff">
-    <meta name="description" content="Generate your own colorful checkerboard pattern with ease.">
-    <meta name="keywords" content="checkerboard, generator, pattern, colorful, squares, grid">
+    <meta name="description" content="Generate colorful patterns with ease.">
+    <meta name="keywords" content="pattern, generator, checkerboard, chevron, diagonal, colorful, design">
     <meta name="author" content="PaperJam">
     <meta name="language" content="English">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkerboard Generator</title>
+    <title>Pattern Generator</title>
     <style>
         /* General Reset */
         * {
@@ -167,24 +167,77 @@
     </style>
 </head>
 <body>
-    <h1>Welcome to the Checkerboard Generator!</h1>
+    <h1>Welcome to the Pattern Generator!</h1>
+
+    <!-- Checkerboard Form -->
     <form action="/checkerboard" method="get">
+        <h2>Checkerboard Generator</h2>
         <div class="color-picker-container">
-            <label for="colorPicker">Choose a color:</label>
-            <div class="color-preview" id="colorPreview"></div>
-            <input type="color" id="colorPicker" name="color1" value="#ff0000" required>
-            <input type="text" id="hexCode" name="colorHex1" value="#ff0000" required>
+            <label for="colorPicker1">Primary Color:</label>
+            <input type="color" id="colorPicker1" name="color1" value="#ff0000" required>
+            <input type="text" id="hexCode1" name="colorHex1" value="#ff0000" required>
         </div>
         <label>
-            <input type="checkbox" id="secondColorCheckbox" name="use_second_color"> Add a second color
+            <input type="checkbox" id="checkerboardSecondColorCheckbox" name="use_second_color"> Use a second color
         </label>
-        <div id="secondColorContainer" class="color-picker-container hidden">
-            <label for="colorPicker2">Choose a second color:</label>
-            <div class="color-preview" id="colorPreview2"></div>
+        <div id="checkerboardSecondColorContainer" class="color-picker-container hidden">
+            <label for="colorPicker2">Secondary Color:</label>
             <input type="color" id="colorPicker2" name="color2" value="#00ff00">
             <input type="text" id="hexCode2" name="colorHex2" value="#00ff00">
         </div>
         <button type="submit">Generate Checkerboard</button>
+    </form>
+
+    <!-- Chevron Form -->
+    <form action="/chevron" method="get">
+        <h2>Chevron Generator</h2>
+        <div class="color-picker-container">
+            <label for="chevronColor1">Primary Color:</label>
+            <input type="color" id="chevronColor1" name="color1" value="#ff0000" required>
+            <input type="text" id="chevronHexCode1" name="colorHex1" value="#ff0000" required>
+        </div>
+        <label>
+            <input type="checkbox" id="chevronSecondColorCheckbox" name="use_second_color"> Use a second color
+        </label>
+        <div id="chevronSecondColorContainer" class="color-picker-container hidden">
+            <label for="chevronColor2">Secondary Color:</label>
+            <input type="color" id="chevronColor2" name="color2" value="#00ff00">
+            <input type="text" id="chevronHexCode2" name="colorHex2" value="#00ff00">
+        </div>
+        <label>
+            <input type="checkbox" id="chevronCustomWidthCheckbox"> Custom Stripe Width
+        </label>
+        <div id="chevronStripeWidthContainer" class="hidden">
+            <label for="chevronStripeWidth">Stripe Width (px):</label>
+            <input type="number" id="chevronStripeWidth" name="stripe_width" value="20" required>
+        </div>
+        <button type="submit">Generate Chevron</button>
+    </form>
+
+    <!-- Diagonal Form -->
+    <form action="/diagonal" method="get">
+        <h2>Diagonal Generator</h2>
+        <div class="color-picker-container">
+            <label for="diagonalColor1">Primary Color:</label>
+            <input type="color" id="diagonalColor1" name="color1" value="#ff0000" required>
+            <input type="text" id="diagonalHexCode1" name="colorHex1" value="#ff0000" required>
+        </div>
+        <label>
+            <input type="checkbox" id="diagonalSecondColorCheckbox" name="use_second_color"> Use a second color
+        </label>
+        <div id="diagonalSecondColorContainer" class="color-picker-container hidden">
+            <label for="diagonalColor2">Secondary Color:</label>
+            <input type="color" id="diagonalColor2" name="color2" value="#00ff00">
+            <input type="text" id="diagonalHexCode2" name="colorHex2" value="#00ff00">
+        </div>
+        <label>
+            <input type="checkbox" id="diagonalCustomWidthCheckbox"> Custom Stripe Width
+        </label>
+        <div id="diagonalStripeWidthContainer" class="hidden">
+            <label for="diagonalStripeWidth">Stripe Width (px):</label>
+            <input type="number" id="diagonalStripeWidth" name="stripe_width" value="20" required>
+        </div>
+        <button type="submit">Generate Diagonal</button>
     </form>
     <script>
         const colorPicker = document.getElementById('colorPicker');
@@ -229,6 +282,31 @@
                 colorPicker2.value = hexCode2.value;
                 colorPreview2.style.backgroundColor = hexCode2.value;
             }
+        });
+        // Dynamic behavior for Chevron
+        document.getElementById('chevronSecondColorCheckbox').addEventListener('change', (e) => {
+            const container = document.getElementById('chevronSecondColorContainer');
+            container.classList.toggle('hidden', !e.target.checked);
+            container.classList.toggle('visible', e.target.checked);
+        });
+
+        document.getElementById('chevronCustomWidthCheckbox').addEventListener('change', (e) => {
+            const container = document.getElementById('chevronStripeWidthContainer');
+            container.classList.toggle('hidden', !e.target.checked);
+            container.classList.toggle('visible', e.target.checked);
+        });
+
+        // Dynamic behavior for Diagonal
+        document.getElementById('diagonalSecondColorCheckbox').addEventListener('change', (e) => {
+            const container = document.getElementById('diagonalSecondColorContainer');
+            container.classList.toggle('hidden', !e.target.checked);
+            container.classList.toggle('visible', e.target.checked);
+        });
+
+        document.getElementById('diagonalCustomWidthCheckbox').addEventListener('change', (e) => {
+            const container = document.getElementById('diagonalStripeWidthContainer');
+            container.classList.toggle('hidden', !e.target.checked);
+            container.classList.toggle('visible', e.target.checked);
         });
     </script>
 </body>
