@@ -21,13 +21,15 @@ def generate_checkerboard_image(hex_color1, hex_color2=None, width=200, height=2
 
     return Image.fromarray(img_data, mode="RGBA")
 
-def generate_chevron_image(hex_color1, hex_color2=None, width=200, height=200, stripe_width=20):
-    """Generate a chevron pattern as an in-memory image."""
+def generate_chevron_image(hex_color1, hex_color2=None, width=200, height=200, stripe_width=20, rotation=90):
+    """Generate a chevron pattern with optional rotation."""
+    # Parse colors
     color1 = tuple(int(hex_color1[i : i + 2], 16) for i in (1, 3, 5)) + (255,)
-    color2 = (0, 0, 0, 0)
+    color2 = (0, 0, 0, 0)  # Transparent by default
     if hex_color2:
         color2 = tuple(int(hex_color2[i : i + 2], 16) for i in (1, 3, 5)) + (255,)
 
+    # Create the base chevron pattern
     img_data = np.zeros((height, width, 4), dtype=np.uint8)
     mid_x = width // 2  # Vertical midpoint for mirroring
 
@@ -37,7 +39,13 @@ def generate_chevron_image(hex_color1, hex_color2=None, width=200, height=200, s
             stripe = ((mirrored_x + y) // stripe_width) % 2
             img_data[y, x] = color1 if stripe == 0 else color2
 
-    return Image.fromarray(img_data, mode="RGBA")
+    chevron_img = Image.fromarray(img_data, mode="RGBA")
+
+    # Rotate the image if requested
+    if rotation != 0:
+        chevron_img = chevron_img.rotate(rotation, expand=True)
+
+    return chevron_img
 
 def generate_diagonal_image(hex_color1, hex_color2=None, width=200, height=200, stripe_width=20):
     """Generate a diagonal stripe pattern as an in-memory image."""
