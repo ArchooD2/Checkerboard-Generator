@@ -1,167 +1,157 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Unified Pattern Generator</title>
-  <style>
-    body {
-      background-color: #1e1e2f;
-      color: #e0e0ff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 3rem;
-      min-height: 100vh;
-    }
-
-    h1 {
-      color: #a29bfe;
-      margin-bottom: 2rem;
-      font-size: 2.5rem;
-      text-shadow: 0 0 10px rgba(162, 155, 254, 0.6);
-    }
-
-    form {
-      background: #2a2a40;
-      padding: 30px;
-      border-radius: 15px;
-      width: 100%;
-      max-width: 500px;
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-      transition: all 0.3s ease;
-    }
-
-    label {
-      font-weight: bold;
-      margin-bottom: 0.3rem;
-      display: block;
-    }
-
-    select, input[type="color"], input[type="number"] {
-      background: #1e1e2f;
-      border: 1px solid #444;
-      border-radius: 8px;
-      color: #e0e0ff;
-      padding: 10px;
-      margin-top: 0.3rem;
-      margin-bottom: 1.5rem;
-      width: 100%;
-      font-size: 1rem;
-      transition: border 0.3s ease;
-    }
-
-    select:focus, input:focus {
-      border-color: #a29bfe;
-      outline: none;
-      box-shadow: 0 0 5px #a29bfe;
-    }
-
-    input[type="checkbox"] {
-      margin-right: 0.5rem;
-      transform: scale(1.2);
-    }
-
-    button {
-      background: linear-gradient(145deg, #3a3a60, #1b1b30);
-      border: none;
-      border-radius: 10px;
-      color: #fff;
-      padding: 12px 20px;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 15px rgba(162, 155, 254, 0.3);
-    }
-
-    button:hover {
-      background: #a29bfe;
-      color: #1e1e2f;
-      box-shadow: 0 0 10px #a29bfe, 0 0 40px #a29bfe;
-    }
-
-    .optional {
-      display: none;
-    }
-
-    footer {
-      margin-top: 2rem;
-      font-size: 0.85rem;
-      color: #b3b3ff;
-    }
-
-    footer a {
-      color: #b3b3ff;
-    }
-  </style>
-</head>
-<body>
-  <h1>Pattern Generator</h1>
-  <form id="patternForm" method="get">
-    <label for="pattern">Pattern Type:</label>
-    <select id="pattern" name="pattern">
-      <option value="checkerboard">Checkerboard</option>
-      <option value="chevron">Chevron</option>
-      <option value="diagonal">Diagonal</option>
-      <option value="stripes">Stripes</option>
-    </select>
-
-    <label for="color1">Primary Color:</label>
-    <input type="color" id="color1" name="color1" value="#ff0000">
-
-    <label>
-      <input type="checkbox" id="useSecondColor" name="use_second_color"> Use a second color
-    </label>
-    <div id="secondColorDiv" class="optional">
-      <label for="color2">Secondary Color:</label>
-      <input type="color" id="color2" name="color2" value="#00ff00">
-    </div>
-
-    <div id="stripeWidthDiv" class="optional">
-      <label for="stripe_width">Stripe Width (px):</label>
-      <input type="number" id="stripe_width" name="stripe_width" value="20" min="1">
-    </div>
-
-    <div id="orientationDiv" class="optional">
-      <label for="orientation">Stripe Orientation:</label>
-      <select id="orientation" name="orientation">
-        <option value="horizontal">Horizontal</option>
-        <option value="vertical">Vertical</option>
-      </select>
-    </div>
-
-    <button type="submit">✨ Generate</button>
-  </form>
-
-  <footer>
-    <p>Created by <a href="https://paprjam.straw.page" target="_blank">PaperJam</a></p>
-  </footer>
-
-  <script>
-    const patternSelect = document.getElementById("pattern");
-    const form = document.getElementById("patternForm");
-    const useSecondColor = document.getElementById("useSecondColor");
-    const secondColorDiv = document.getElementById("secondColorDiv");
-    const stripeWidthDiv = document.getElementById("stripeWidthDiv");
-    const orientationDiv = document.getElementById("orientationDiv");
-
-    function updateFormAction() {
-      const pattern = patternSelect.value;
-      form.action = `/${pattern}`;
-      stripeWidthDiv.style.display = ["chevron", "diagonal", "stripes"].includes(pattern) ? "block" : "none";
-      orientationDiv.style.display = pattern === "stripes" ? "block" : "none";
-    }
-
-    patternSelect.addEventListener("change", updateFormAction);
-    useSecondColor.addEventListener("change", () => {
-      secondColorDiv.style.display = useSecondColor.checked ? "block" : "none";
-    });
-
-    // Initialize state
-    updateFormAction();
-    secondColorDiv.style.display = useSecondColor.checked ? "block" : "none";
-    stripeWidthDiv.style.display = ["chevron", "diagonal", "stripes"].includes(patternSelect.value) ? "block" : "none";
-    orientationDiv.style.display = patternSelect.value === "stripes" ? "block" : "none";
-  </script>
-</body>
+    <head>
+        <!-- Open Graph for Discord, Facebook, etc. -->
+        <meta property="og:title" content="Unified Pattern Generator">
+        <meta property="og:description" content="Create beautiful patterns like checkerboards, stripes, chevrons, and more with customizable colors.">
+        <meta property="og:url" content="https://checkerboard-generator.onrender.com/">
+        <meta property="og:type" content="website">
+        <!-- Twitter Card -->
+        <meta name="twitter:title" content="Unified Pattern Generator">
+        <meta name="twitter:description" content="Generate checkerboards, stripes, and more with your own color palette.">
+        <meta charset="UTF-8">
+        <title>Unified Pattern Generator</title>
+        <style>
+            body {
+            background-color: #1e1e2f;
+            color: #e0e0ff;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3rem;
+            min-height: 100vh;
+            }
+            h1 {
+            color: #a29bfe;
+            margin-bottom: 2rem;
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px rgba(162, 155, 254, 0.6);
+            }
+            form {
+            background: #2a2a40;
+            padding: 30px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            transition: all 0.3s ease;
+            }
+            label {
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+            display: block;
+            }
+            select, input[type="color"], input[type="number"] {
+            background: #1e1e2f;
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #e0e0ff;
+            padding: 10px;
+            margin-top: 0.3rem;
+            margin-bottom: 1.5rem;
+            width: 100%;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+            }
+            select:focus, input:focus {
+            border-color: #a29bfe;
+            outline: none;
+            box-shadow: 0 0 5px #a29bfe;
+            }
+            input[type="checkbox"] {
+            margin-right: 0.5rem;
+            transform: scale(1.2);
+            }
+            button {
+            background: linear-gradient(145deg, #3a3a60, #1b1b30);
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            padding: 12px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(162, 155, 254, 0.3);
+            }
+            button:hover {
+            background: #a29bfe;
+            color: #1e1e2f;
+            box-shadow: 0 0 10px #a29bfe, 0 0 40px #a29bfe;
+            }
+            .optional {
+            display: none;
+            }
+            footer {
+            margin-top: 2rem;
+            font-size: 0.85rem;
+            color: #b3b3ff;
+            }
+            footer a {
+            color: #b3b3ff;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>Pattern Generator</h1>
+        <form id="patternForm" method="get">
+            <label for="pattern">Pattern Type:</label>
+            <select id="pattern" name="pattern">
+                <option value="checkerboard">Checkerboard</option>
+                <option value="chevron">Chevron</option>
+                <option value="diagonal">Diagonal</option>
+                <option value="stripes">Stripes</option>
+            </select>
+            <label for="color1">Primary Color:</label>
+            <input type="color" id="color1" name="color1" value="#ff0000">
+            <label>
+            <input type="checkbox" id="useSecondColor" name="use_second_color"> Use a second color
+            </label>
+            <div id="secondColorDiv" class="optional">
+                <label for="color2">Secondary Color:</label>
+                <input type="color" id="color2" name="color2" value="#00ff00">
+            </div>
+            <div id="stripeWidthDiv" class="optional">
+                <label for="stripe_width">Stripe Width (px):</label>
+                <input type="number" id="stripe_width" name="stripe_width" value="20" min="1">
+            </div>
+            <div id="orientationDiv" class="optional">
+                <label for="orientation">Stripe Orientation:</label>
+                <select id="orientation" name="orientation">
+                    <option value="horizontal">Horizontal</option>
+                    <option value="vertical">Vertical</option>
+                </select>
+            </div>
+            <button type="submit">✨ Generate</button>
+        </form>
+        <footer>
+            <p>Created by <a href="https://paprjam.straw.page" target="_blank">PaperJam</a></p>
+        </footer>
+        <script>
+            const patternSelect = document.getElementById("pattern");
+            const form = document.getElementById("patternForm");
+            const useSecondColor = document.getElementById("useSecondColor");
+            const secondColorDiv = document.getElementById("secondColorDiv");
+            const stripeWidthDiv = document.getElementById("stripeWidthDiv");
+            const orientationDiv = document.getElementById("orientationDiv");
+            
+            function updateFormAction() {
+              const pattern = patternSelect.value;
+              form.action = `/${pattern}`;
+              stripeWidthDiv.style.display = ["chevron", "diagonal", "stripes"].includes(pattern) ? "block" : "none";
+              orientationDiv.style.display = pattern === "stripes" ? "block" : "none";
+            }
+            
+            patternSelect.addEventListener("change", updateFormAction);
+            useSecondColor.addEventListener("change", () => {
+              secondColorDiv.style.display = useSecondColor.checked ? "block" : "none";
+            });
+            
+            // Initialize state
+            updateFormAction();
+            secondColorDiv.style.display = useSecondColor.checked ? "block" : "none";
+            stripeWidthDiv.style.display = ["chevron", "diagonal", "stripes"].includes(patternSelect.value) ? "block" : "none";
+            orientationDiv.style.display = patternSelect.value === "stripes" ? "block" : "none";
+        </script>
+    </body>
 </html>
