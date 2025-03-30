@@ -1,316 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta property="og:title" content="Pattern Generator">
-    <meta property="og:description" content="Generate colorful patterns including checkerboards, chevrons, and diagonals.">
-    <meta property="og:image" content="https://ibb.co/dbTmYnC">
-    <meta property="og:url" content="https://pattern-generator.onrender.com">
-    <meta name="theme-color" content="#a600ff">
-    <meta name="description" content="Generate colorful patterns with ease.">
-    <meta name="keywords" content="pattern, generator, checkerboard, chevron, diagonal, colorful, design">
-    <meta name="author" content="PaperJam">
-    <meta name="language" content="English">
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pattern Generator</title>
-    <style>
-        /* General Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        p.rentry_link {
-            font-size: 0.8rem;
-            color: #b3b3ff;
-            text-align: center;
-            margin-top: 20px;
-            font-family: 'comic sans ms', sans-serif;
-        }
-        /* Body styling */
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #1e1e2f; /* Dark purple background */
-            color: #e0e0ff; /* Soft white text */
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
+  <meta charset="UTF-8">
+  <title>Unified Pattern Generator</title>
+  <style>
+    body {
+      background-color: #1e1e2f;
+      color: #e0e0ff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 3rem;
+      min-height: 100vh;
+    }
 
-        /* Header styling */
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-            color: #a29bfe; /* Light purple text */
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
-            animation: fadeIn 1.2s ease-in-out;
-        }
+    h1 {
+      color: #a29bfe;
+      margin-bottom: 2rem;
+      font-size: 2.5rem;
+      text-shadow: 0 0 10px rgba(162, 155, 254, 0.6);
+    }
 
-        /* Form styling */
-        form {
-            background: #2a2a40; /* Slightly lighter dark background */
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            animation: slideUp 1s ease-in-out;
-        }
+    form {
+      background: #2a2a40;
+      padding: 30px;
+      border-radius: 15px;
+      width: 100%;
+      max-width: 500px;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
+    }
 
-        label {
-            font-size: 1.2rem;
-            color: #b3b3ff; /* Muted light purple */
-        }
+    label {
+      font-weight: bold;
+      margin-bottom: 0.3rem;
+      display: block;
+    }
 
-        /* Color Picker Styling */
-        .color-picker-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
+    select, input[type="color"], input[type="number"] {
+      background: #1e1e2f;
+      border: 1px solid #444;
+      border-radius: 8px;
+      color: #e0e0ff;
+      padding: 10px;
+      margin-top: 0.3rem;
+      margin-bottom: 1.5rem;
+      width: 100%;
+      font-size: 1rem;
+      transition: border 0.3s ease;
+    }
 
-        .color-preview {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: 3px solid #444;
-            cursor: pointer;
-            background-color: #ff0000; /* Initial color */
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
+    select:focus, input:focus {
+      border-color: #a29bfe;
+      outline: none;
+      box-shadow: 0 0 5px #a29bfe;
+    }
 
-        .color-preview:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 10px #6c5ce7;
-        }
+    input[type="checkbox"] {
+      margin-right: 0.5rem;
+      transform: scale(1.2);
+    }
 
-        input[type="color"] {
-            display: none; /* Hide default color picker */
-        }
+    button {
+      background: linear-gradient(145deg, #3a3a60, #1b1b30);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      padding: 12px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(162, 155, 254, 0.3);
+    }
 
-        #hexCode, #hexCode2 {
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #444;
-            background-color: #3a3a5a;
-            color: #e0e0ff;
-            font-size: 1rem;
-            transition: transform 0.2s, box-shadow 0.2s;
-            flex-grow: 1;
-        }
+    button:hover {
+      background: #a29bfe;
+      color: #1e1e2f;
+      box-shadow: 0 0 10px #a29bfe, 0 0 40px #a29bfe;
+    }
 
-        #hexCode:focus, #hexCode2:focus {
-            outline: none;
-            transform: scale(1.05);
-            box-shadow: 0 0 10px #6c5ce7;
-        }
+    .optional {
+      display: none;
+    }
 
-        button {
-            padding: 10px 20px;
-            border-radius: 5px;
-            border: none;
-            background-color: #6c5ce7;
-            color: white;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.2s;
-        }
+    footer {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #b3b3ff;
+    }
 
-        button:hover {
-            background-color: #a29bfe;
-            transform: translateY(-2px);
-        }
-
-        button:active {
-            transform: translateY(0);
-        }
-
-        .hidden {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease, opacity 0.3s ease;
-            opacity: 0;
-        }
-
-        .visible {
-            max-height: 200px; /* Enough to show the second color picker */
-            transition: max-height 0.3s ease, opacity 0.3s ease;
-            opacity: 1;
-        }
-
-        /* Animations */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes slideUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
+    footer a {
+      color: #b3b3ff;
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome to the Pattern Generator!</h1>
+  <h1>Pattern Generator</h1>
+  <form id="patternForm" method="get">
+    <label for="pattern">Pattern Type:</label>
+    <select id="pattern" name="pattern">
+      <option value="checkerboard">Checkerboard</option>
+      <option value="chevron">Chevron</option>
+      <option value="diagonal">Diagonal</option>
+      <option value="stripes">Stripes</option>
+    </select>
 
-    <!-- Checkerboard Form -->
-    <form action="/checkerboard" method="get">
-        <h2>Checkerboard Generator</h2>
-        <div class="color-picker-container">
-            <label for="colorPicker1">Primary Color:</label>
-            <input type="color" id="colorPicker1" name="color1" value="#ff0000" required>
-            <input type="text" id="hexCode1" name="colorHex1" value="#ff0000" required>
-        </div>
-        <label>
-            <input type="checkbox" id="checkerboardSecondColorCheckbox" name="use_second_color"> Use a second color
-        </label>
-        <div id="checkerboardSecondColorContainer" class="color-picker-container hidden">
-            <label for="colorPicker2">Secondary Color:</label>
-            <input type="color" id="colorPicker2" name="color2" value="#00ff00">
-            <input type="text" id="hexCode2" name="colorHex2" value="#00ff00">
-        </div>
-        <button type="submit">Generate Checkerboard</button>
-    </form>
+    <label for="color1">Primary Color:</label>
+    <input type="color" id="color1" name="color1" value="#ff0000">
 
-    <!-- Chevron Form -->
-    <form action="/chevron" method="get">
-        <h2>Chevron Generator</h2>
-        <div class="color-picker-container">
-            <label for="chevronColor1">Primary Color:</label>
-            <input type="color" id="chevronColor1" name="color1" value="#ff0000" required>
-            <input type="text" id="chevronHexCode1" name="colorHex1" value="#ff0000" required>
-        </div>
-        <label>
-            <input type="checkbox" id="chevronSecondColorCheckbox" name="use_second_color"> Use a second color
-        </label>
-        <div id="chevronSecondColorContainer" class="color-picker-container hidden">
-            <label for="chevronColor2">Secondary Color:</label>
-            <input type="color" id="chevronColor2" name="color2" value="#00ff00">
-            <input type="text" id="chevronHexCode2" name="colorHex2" value="#00ff00">
-        </div>
-        <label>
-            <input type="checkbox" id="chevronCustomWidthCheckbox"> Custom Stripe Width
-        </label>
-        <div id="chevronStripeWidthContainer" class="hidden">
-            <label for="chevronStripeWidth">Stripe Width (px):</label>
-            <input type="number" id="chevronStripeWidth" name="stripe_width" value="20" required>
-        </div>
-        <button type="submit">Generate Chevron</button>
-    </form>
+    <label>
+      <input type="checkbox" id="useSecondColor" name="use_second_color"> Use a second color
+    </label>
+    <div id="secondColorDiv" class="optional">
+      <label for="color2">Secondary Color:</label>
+      <input type="color" id="color2" name="color2" value="#00ff00">
+    </div>
 
-    <!-- Diagonal Form -->
-    <form action="/diagonal" method="get">
-        <h2>Diagonal Generator</h2>
-        <div class="color-picker-container">
-            <label for="diagonalColor1">Primary Color:</label>
-            <input type="color" id="diagonalColor1" name="color1" value="#ff0000" required>
-            <input type="text" id="diagonalHexCode1" name="colorHex1" value="#ff0000" required>
-        </div>
-        <label>
-            <input type="checkbox" id="diagonalSecondColorCheckbox" name="use_second_color"> Use a second color
-        </label>
-        <div id="diagonalSecondColorContainer" class="color-picker-container hidden">
-            <label for="diagonalColor2">Secondary Color:</label>
-            <input type="color" id="diagonalColor2" name="color2" value="#00ff00">
-            <input type="text" id="diagonalHexCode2" name="colorHex2" value="#00ff00">
-        </div>
-        <label>
-            <input type="checkbox" id="diagonalCustomWidthCheckbox"> Custom Stripe Width
-        </label>
-        <div id="diagonalStripeWidthContainer" class="hidden">
-            <label for="diagonalStripeWidth">Stripe Width (px):</label>
-            <input type="number" id="diagonalStripeWidth" name="stripe_width" value="20" required>
-        </div>
-        <button type="submit">Generate Diagonal</button>
-    </form>
-    <script>
-        const colorPicker = document.getElementById('colorPicker');
-        const colorPreview = document.getElementById('colorPreview');
-        const hexCode = document.getElementById('hexCode');
+    <div id="stripeWidthDiv" class="optional">
+      <label for="stripe_width">Stripe Width (px):</label>
+      <input type="number" id="stripe_width" name="stripe_width" value="20" min="1">
+    </div>
 
-        const secondColorCheckbox = document.getElementById('secondColorCheckbox');
-        const secondColorContainer = document.getElementById('secondColorContainer');
-        const colorPicker2 = document.getElementById('colorPicker2');
-        const colorPreview2 = document.getElementById('colorPreview2');
-        const hexCode2 = document.getElementById('hexCode2');
+    <div id="orientationDiv" class="optional">
+      <label for="orientation">Stripe Orientation:</label>
+      <select id="orientation" name="orientation">
+        <option value="horizontal">Horizontal</option>
+        <option value="vertical">Vertical</option>
+      </select>
+    </div>
 
-        secondColorCheckbox.addEventListener('change', () => {
-            if (secondColorCheckbox.checked) {
-                secondColorContainer.classList.remove('hidden');
-                secondColorContainer.classList.add('visible');
-            } else {
-                secondColorContainer.classList.remove('visible');
-                secondColorContainer.classList.add('hidden');
-            }
-        });
+    <button type="submit">✨ Generate</button>
+  </form>
 
-        colorPreview.addEventListener('click', () => colorPicker.click());
-        colorPicker.addEventListener('input', () => {
-            colorPreview.style.backgroundColor = colorPicker.value;
-            hexCode.value = colorPicker.value;
-        });
-        hexCode.addEventListener('input', () => {
-            if (/^#[0-9A-Fa-f]{6}$/.test(hexCode.value)) {
-                colorPicker.value = hexCode.value;
-                colorPreview.style.backgroundColor = hexCode.value;
-            }
-        });
+  <footer>
+    <p>Created by <a href="https://paprjam.straw.page" target="_blank">PaperJam</a></p>
+  </footer>
 
-        colorPreview2.addEventListener('click', () => colorPicker2.click());
-        colorPicker2.addEventListener('input', () => {
-            colorPreview2.style.backgroundColor = colorPicker2.value;
-            hexCode2.value = colorPicker2.value;
-        });
-        hexCode2.addEventListener('input', () => {
-            if (/^#[0-9A-Fa-f]{6}$/.test(hexCode2.value)) {
-                colorPicker2.value = hexCode2.value;
-                colorPreview2.style.backgroundColor = hexCode2.value;
-            }
-        });
-        // Dynamic behavior for Chevron
-        document.getElementById('chevronSecondColorCheckbox').addEventListener('change', (e) => {
-            const container = document.getElementById('chevronSecondColorContainer');
-            container.classList.toggle('hidden', !e.target.checked);
-            container.classList.toggle('visible', e.target.checked);
-        });
+  <script>
+    const patternSelect = document.getElementById("pattern");
+    const form = document.getElementById("patternForm");
+    const useSecondColor = document.getElementById("useSecondColor");
+    const secondColorDiv = document.getElementById("secondColorDiv");
+    const stripeWidthDiv = document.getElementById("stripeWidthDiv");
+    const orientationDiv = document.getElementById("orientationDiv");
 
-        document.getElementById('chevronCustomWidthCheckbox').addEventListener('change', (e) => {
-            const container = document.getElementById('chevronStripeWidthContainer');
-            container.classList.toggle('hidden', !e.target.checked);
-            container.classList.toggle('visible', e.target.checked);
-        });
+    function updateFormAction() {
+      const pattern = patternSelect.value;
+      form.action = `/${pattern}`;
+      stripeWidthDiv.style.display = ["chevron", "diagonal", "stripes"].includes(pattern) ? "block" : "none";
+      orientationDiv.style.display = pattern === "stripes" ? "block" : "none";
+    }
 
-        // Dynamic behavior for Diagonal
-        document.getElementById('diagonalSecondColorCheckbox').addEventListener('change', (e) => {
-            const container = document.getElementById('diagonalSecondColorContainer');
-            container.classList.toggle('hidden', !e.target.checked);
-            container.classList.toggle('visible', e.target.checked);
-        });
+    patternSelect.addEventListener("change", updateFormAction);
+    useSecondColor.addEventListener("change", () => {
+      secondColorDiv.style.display = useSecondColor.checked ? "block" : "none";
+    });
 
-        document.getElementById('diagonalCustomWidthCheckbox').addEventListener('change', (e) => {
-            const container = document.getElementById('diagonalStripeWidthContainer');
-            container.classList.toggle('hidden', !e.target.checked);
-            container.classList.toggle('visible', e.target.checked);
-        });
-    </script>
+    // Initialize state
+    updateFormAction();
+    secondColorDiv.style.display = useSecondColor.checked ? "block" : "none";
+    stripeWidthDiv.style.display = ["chevron", "diagonal", "stripes"].includes(patternSelect.value) ? "block" : "none";
+    orientationDiv.style.display = patternSelect.value === "stripes" ? "block" : "none";
+  </script>
 </body>
-<footer>
-    <p class="rentry_link">Created by <a href="https://paprjam.straw.page">PaperJam</a></p>
-</footer>
 </html>

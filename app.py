@@ -1,6 +1,6 @@
 from flask import Flask, request, send_file, render_template
 from io import BytesIO
-from helper import generate_checkerboard_image, generate_chevron_image, generate_diagonal_image
+from helper import generate_checkerboard_image, generate_chevron_image, generate_diagonal_image, generate_stripe_image
 
 app = Flask(__name__)
 
@@ -90,5 +90,33 @@ def diagonal():
     except Exception as e:
         return f"Error: {e}", 500
 
+
+
+@app.route("/stripes", methods=["GET"])
+def stripes():
+    """Generate and download the stripe image."""
+    hex_color1 = request.args.get("color1", "#ffffff")
+    hex_color2 = request.args.get("color2")
+    stripe_width = int(request.args.get("stripe_width", 20))
+    orientation = request.args.get("orientation", "horizontal")
+
+    try:
+        img = generate_stripe_image(hex_color1, hex_color2, stripe_width=stripe_width, orientation=orientation)
+        img_buffer = BytesIO()
+        img.save(img_buffer, format="PNG")
+        img_buffer.seek(0)
+
+        file_name = f"stripes_{orientation}_{hex_color1[1:]}"
+        if hex_color2:
+            file_name += f"_{hex_color2[1:]}"
+        file_name += ".png"
+        return send_file(
+            img_buffer,
+            mimetype="image/png",
+            as_attachment=True,
+            download_name=file_name,
+        )
+    except Exception as e:
+        return f"Error: {e}", 500
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)

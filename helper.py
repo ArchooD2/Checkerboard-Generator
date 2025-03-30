@@ -62,3 +62,24 @@ def generate_diagonal_image(hex_color1, hex_color2=None, width=200, height=200, 
             img_data[y, x] = color1 if stripe == 0 else color2
 
     return Image.fromarray(img_data, mode="RGBA")
+
+
+def generate_stripe_image(hex_color1, hex_color2=None, width=200, height=200, stripe_width=20, orientation='horizontal'):
+    """Generate a striped pattern as an in-memory image."""
+    color1 = tuple(int(hex_color1[i : i + 2], 16) for i in (1, 3, 5)) + (255,)
+    color2 = (0, 0, 0, 0)
+    if hex_color2:
+        color2 = tuple(int(hex_color2[i : i + 2], 16) for i in (1, 3, 5)) + (255,)
+
+    img_data = np.zeros((height, width, 4), dtype=np.uint8)
+
+    if orientation == 'horizontal':
+        for y in range(height):
+            stripe = (y // stripe_width) % 2
+            img_data[y, :] = color1 if stripe == 0 else color2
+    else:
+        for x in range(width):
+            stripe = (x // stripe_width) % 2
+            img_data[:, x] = color1 if stripe == 0 else color2
+
+    return Image.fromarray(img_data, mode="RGBA")
