@@ -101,26 +101,34 @@
                 <option value="chevron">Chevron</option>
                 <option value="diagonal">Diagonal</option>
                 <option value="stripes">Stripes</option>
+                <option value="radial">Radial</option>
+                <!-- ✅ NEW -->
             </select>
             <label for="color1">Primary Color:</label>
             <input type="color" id="color1" name="color1" value="#ff0000">
             <label>
-            <input type="checkbox" id="useSecondColor" name="use_second_color"> Use a second color
+            <input type="checkbox" id="useSecondColor" name="use_second_color">
+            Use a second color
             </label>
             <div id="secondColorDiv" class="optional">
                 <label for="color2">Secondary Color:</label>
                 <input type="color" id="color2" name="color2" value="#00ff00">
             </div>
-            <div id="stripeWidthDiv" class="optional">
+            <!-- Unified option containers using data-option -->
+            <div class="optional" data-option="stripe_width">
                 <label for="stripe_width">Stripe Width (px):</label>
                 <input type="number" id="stripe_width" name="stripe_width" value="20" min="1">
             </div>
-            <div id="orientationDiv" class="optional">
+            <div class="optional" data-option="orientation">
                 <label for="orientation">Stripe Orientation:</label>
                 <select id="orientation" name="orientation">
                     <option value="horizontal">Horizontal</option>
                     <option value="vertical">Vertical</option>
                 </select>
+            </div>
+            <div class="optional" data-option="ring_width">
+                <label for="ring_width">Ring Width (px):</label>
+                <input type="number" id="ring_width" name="ring_width" value="20" min="1">
             </div>
             <button type="submit">✨ Generate</button>
         </form>
@@ -132,26 +140,54 @@
             const form = document.getElementById("patternForm");
             const useSecondColor = document.getElementById("useSecondColor");
             const secondColorDiv = document.getElementById("secondColorDiv");
-            const stripeWidthDiv = document.getElementById("stripeWidthDiv");
-            const orientationDiv = document.getElementById("orientationDiv");
+            
+            const patternOptions = {
+            checkerboard: [],
+            chevron: ["stripe_width"],
+            diagonal: ["stripe_width"],
+            stripes: ["stripe_width", "orientation"],
+            radial: ["ring_width"]
+            };
             
             function updateFormAction() {
-              const pattern = patternSelect.value;
-              form.action = `/${pattern}`;
-              stripeWidthDiv.style.display = ["chevron", "diagonal", "stripes"].includes(pattern) ? "block" : "none";
-              orientationDiv.style.display = pattern === "stripes" ? "block" : "none";
+            const pattern = patternSelect.value;
+            form.action = `/${pattern}`;
+            updateFormOptions(pattern);
             }
             
-            patternSelect.addEventListener("change", updateFormAction);
+            function updateFormOptions(pattern) {
+            const enabledOptions = patternOptions[pattern] || [];
+            document.querySelectorAll("[data-option]").forEach((el) => {
+                el.style.display = enabledOptions.includes(el.dataset.option) ? "block" : "none";
+            });
+            }
+            
             useSecondColor.addEventListener("change", () => {
-              secondColorDiv.style.display = useSecondColor.checked ? "block" : "none";
+            const enabled = useSecondColor.checked;
+            secondColorDiv.style.display = enabled ? "block" : "none";
+            
+            // Add or remove the 'name' attribute to control form submission
+            const color2Input = document.getElementById("color2");
+            if (enabled) {
+            color2Input.setAttribute("name", "color2");
+            } else {
+            color2Input.removeAttribute("name");
+            }
             });
             
-            // Initialize state
+            
+            patternSelect.addEventListener("change", updateFormAction);
+            
+            // Initialize state on page load
             updateFormAction();
             secondColorDiv.style.display = useSecondColor.checked ? "block" : "none";
-            stripeWidthDiv.style.display = ["chevron", "diagonal", "stripes"].includes(patternSelect.value) ? "block" : "none";
-            orientationDiv.style.display = patternSelect.value === "stripes" ? "block" : "none";
+            const color2Input = document.getElementById("color2");
+            if (useSecondColor.checked) {
+            color2Input.setAttribute("name", "color2");
+            } else {
+            color2Input.removeAttribute("name");
+            }
+            
         </script>
     </body>
 </html>
