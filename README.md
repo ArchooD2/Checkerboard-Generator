@@ -1,30 +1,61 @@
-# Checkerboard Generator
+# Pattern Generator 🟦⬜
 
-This is just the repo for [Checkerboard Generator](https://checkerboard-generator.onrender.com).
+A lightweight Flask web app that generates customizable patterns as downloadable PNG images.
 
-## What is it?
-
-A small web application that generates customizable checkerboard patterns as images, served via a lightweight Flask app.
-
-## Features
-
-- Generate checkerboard patterns with custom colors.
-- Download the generated pattern as a PNG file.
-
-## Where to Use It?
-
-Visit the live app here: [Checkerboard Generator](https://checkerboard-generator.onrender.com)
-
-## Deployment
-
-The app is deployed on [Render](https://render.com) and uses:
-- **Flask** for the backend.
-- **Gunicorn** as the production server.
-
-## License
-
-This project is licensed under the [GNU GPL3.](LICENSE).
+🌐 Live App  
+[https://checkerboard-generator.onrender.com](https://checkerboard-generator.onrender.com)
 
 ---
 
-Thanks for visiting!
+## 🚀 Features
+
+- Generate checkerboard patterns with custom colors.
+- Download generated images directly.
+- Multiple layout styles: standard, chevron, diagonal, stripes.
+- Minimal, fast, and easy to use.
+
+---
+
+## 🛠️ How to Run Locally
+
+1. Clone the repo:  
+`git clone https://github.com/ArchooD2/Checkerboard-Generator.git && cd Checkerboard-Generator`
+
+2. (Optional) Set up a virtual environment:  
+`python -m venv venv && source venv/bin/activate`  
+(Windows: `venv\Scripts\activate`)
+
+3. Install dependencies:  
+`pip install -r requirements.txt`
+
+4. Run the app:  
+`python app.py`
+
+Then open your browser at `http://localhost:5000`
+
+---
+
+## ✨ Example Usage
+
+Open this in your browser:  
+`http://localhost:5000/chevron?color1=%23ff0000&color2=%230000ff&stripe_width=30`  
+It generates a red and blue chevron checkerboard.
+
+---
+
+## 🧪 Tests
+
+Gonna add later! Using this to learn how to write good unit tests!
+
+---
+
+## 📄 License
+
+General Public License v3.0!
+-# see licence file for more info
+
+---
+
+## 🤝 Contributing
+
+PRs welcome! Or open an issue if something breaks.
