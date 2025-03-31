@@ -1,6 +1,6 @@
 from PIL import Image
 import numpy as np
-
+import math
 def generate_checkerboard_image(hex_color1, hex_color2=None, width=200, height=200, square_size=50):
     """Generate a checkerboard pattern as an in-memory image."""
     color1 = tuple(int(hex_color1[i : i + 2], 16) for i in (1, 3, 5)) + (255,)  # Add full opacity
@@ -87,7 +87,6 @@ def generate_stripe_image(hex_color1, hex_color2=None, width=200, height=200, st
 
 def generate_radial_pattern(hex_color1, hex_color2=None, width=200, height=200, ring_width=20):
     """Generate a radial pattern of concentric circles as an in-memory image."""
-    import math
 
     color1 = tuple(int(hex_color1[i : i + 2], 16) for i in (1, 3, 5)) + (255,)
     color2 = (0, 0, 0, 0)
