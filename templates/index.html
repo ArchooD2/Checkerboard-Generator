@@ -103,6 +103,7 @@
                 <option value="stripes">Stripes</option>
                 <option value="radial">Radial</option>
                 <!-- ✅ NEW -->
+                <option value="diagonalchecker">Diagonal Checker</option>
             </select>
             <label for="color1">Primary Color:</label>
             <input type="color" id="color1" name="color1" value="#ff0000">
@@ -130,6 +131,11 @@
                 <label for="ring_width">Ring Width (px):</label>
                 <input type="number" id="ring_width" name="ring_width" value="20" min="1">
             </div>
+            <div class="optional" data-option="square_size">
+                <label for="square_size">Checker Square Size (px):</label>
+                <input type="number" id="square_size" name="square_size" value="50" min="1">
+            </div>
+
             <button type="submit">✨ Generate</button>
         </form>
         <footer>
@@ -142,11 +148,12 @@
             const secondColorDiv = document.getElementById("secondColorDiv");
             
             const patternOptions = {
-            checkerboard: [],
+            checkerboard: ["square_size"],
             chevron: ["stripe_width"],
             diagonal: ["stripe_width"],
             stripes: ["stripe_width", "orientation"],
-            radial: ["ring_width"]
+            radial: ["ring_width"],
+            diagonalchecker: ["stripe_width","square_size"]
             };
             
             function updateFormAction() {
