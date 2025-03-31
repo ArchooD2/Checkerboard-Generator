@@ -77,9 +77,10 @@ def generate_stripe_image(hex_color1, hex_color2=None, width=200, height=200, st
         for y in range(height):
             stripe = (y // stripe_width) % 2
             img_data[y, :] = color1 if stripe == 0 else color2
-    else:
+    elif orientation == 'vertical':
         for x in range(width):
             stripe = (x // stripe_width) % 2
             img_data[:, x] = color1 if stripe == 0 else color2
-
+    else:
+        raise ValueError("Invalid orientation. Use 'horizontal' or 'vertical'.")
     return Image.fromarray(img_data, mode="RGBA")
