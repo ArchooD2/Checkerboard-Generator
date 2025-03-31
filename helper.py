@@ -103,3 +103,27 @@ def generate_radial_pattern(hex_color1, hex_color2=None, width=200, height=200, 
             img_data[y, x] = color1 if ring == 0 else color2
 
     return Image.fromarray(img_data, mode="RGBA")
+
+def generate_diagonal_checker_image(hex_color1, hex_color2=None, width=200, height=200, square_size=50, stripe_width=20):
+    """Generate a diagonal stripe pattern masked by a checkerboard pattern."""
+    # Set colors
+    color1 = tuple(int(hex_color1[i:i+2], 16) for i in (1, 3, 5)) + (255,)
+    color2 = (0, 0, 0, 0)  # Transparent by default
+    if hex_color2:
+        color2 = tuple(int(hex_color2[i:i+2], 16) for i in (1, 3, 5)) + (255,)
+
+    img_data = np.zeros((height, width, 4), dtype=np.uint8)
+
+    # Loop through every pixel
+    for y in range(height):
+        for x in range(width):
+            # Checkerboard logic (only keep stripe where checker square is "on")
+            checker_on = ((x // square_size + y // square_size) % 2) == 0
+            if checker_on:
+                # Diagonal stripe logic
+                stripe = ((x + y) // stripe_width) % 2
+                img_data[y, x] = color1 if stripe == 0 else color2
+            else:
+                img_data[y, x] = (0, 0, 0, 0)  # Fully transparent outside checker
+
+    return Image.fromarray(img_data, mode="RGBA")

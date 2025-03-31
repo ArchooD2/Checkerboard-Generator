@@ -7,7 +7,8 @@ try:
         generate_chevron_image,
         generate_diagonal_image,
         generate_stripe_image,
-        generate_radial_pattern
+        generate_radial_pattern,
+        generate_diagonal_checker_image
     )
 except ImportError:
     # If running directly (e.g. `python app.py`)
@@ -16,7 +17,8 @@ except ImportError:
         generate_chevron_image,
         generate_diagonal_image,
         generate_stripe_image,
-        generate_radial_pattern
+        generate_radial_pattern,
+        generate_diagonal_checker_image
     )
 
 app = Flask(__name__)
@@ -162,5 +164,37 @@ def radial():
     except Exception as e:
         return f"Error: {e}", 500
 
+@app.route("/diagonalchecker", methods=["GET"])
+def diagonalChecker():
+    """Generate and download a diagonal-striped pattern masked by a checkerboard."""
+    hex_color1 = request.args.get("color1", "#ffffff")
+    hex_color2 = request.args.get("color2")
+    stripe_width = int(request.args.get("stripe_width", 20))
+    square_size = int(request.args.get("square_size", 50))
+
+    try:
+        img = generate_diagonal_checker_image(
+            hex_color1, hex_color2, stripe_width=stripe_width, square_size=square_size
+        )
+        img_buffer = BytesIO()
+        img.save(img_buffer, format="PNG")
+        img_buffer.seek(0)
+
+        file_name = f"diagonal_checker_{hex_color1[1:]}"
+        if hex_color2:
+            file_name += f"_{hex_color2[1:]}"
+        file_name += ".png"
+
+        return send_file(
+            img_buffer,
+            mimetype="image/png",
+            as_attachment=True,
+            download_name=file_name,
+        )
+    except Exception as e:
+        return f"Error: {e}", 500
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000)
+
