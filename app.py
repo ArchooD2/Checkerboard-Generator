@@ -21,12 +21,32 @@ except ImportError:
         generate_diagonal_checker_image
     )
 
+
+import os
+
+COUNTER_FILE = ".counter"
+
+def read_counter():
+    if not os.path.exists(COUNTER_FILE):
+        with open(COUNTER_FILE, "w") as f:
+            f.write("0")
+        return 0
+    with open(COUNTER_FILE, "r") as f:
+        return int(f.read().strip())
+
+def increment_counter():
+    count = read_counter() + 1
+    with open(COUNTER_FILE, "w") as f:
+        f.write(str(count))
+    return count
+
 app = Flask(__name__)
 
 @app.route("/")
 def home():
     """Render the main page."""
-    return render_template("index.html")
+    count = read_counter()
+    return render_template("index.html", count=count)
 
 @app.route("/checkerboard", methods=["GET"])
 def checkerboard():
@@ -48,12 +68,14 @@ def checkerboard():
         if hex_color2:
             file_name += f"_{hex_color2[1:]}"
         file_name += ".png"
+        increment_counter()
         return send_file(
             img_buffer,
             mimetype="image/png",
             as_attachment=True,
             download_name=file_name,
         )
+    
     except Exception as e:
         return f"Error: {e}", 500
 
@@ -74,6 +96,7 @@ def chevron():
         if hex_color2:
             file_name += f"_{hex_color2[1:]}"
         file_name += ".png"
+        increment_counter()
         return send_file(
             img_buffer,
             mimetype="image/png",
@@ -100,6 +123,7 @@ def diagonal():
         if hex_color2:
             file_name += f"_{hex_color2[1:]}"
         file_name += ".png"
+        increment_counter()
         return send_file(
             img_buffer,
             mimetype="image/png",
@@ -129,6 +153,7 @@ def stripes():
         if hex_color2:
             file_name += f"_{hex_color2[1:]}"
         file_name += ".png"
+        increment_counter()
         return send_file(
             img_buffer,
             mimetype="image/png",
@@ -155,6 +180,7 @@ def radial():
         if hex_color2:
             file_name += f"_{hex_color2[1:]}"
         file_name += ".png"
+        increment_counter()
         return send_file(
             img_buffer,
             mimetype="image/png",
@@ -184,7 +210,7 @@ def diagonalChecker():
         if hex_color2:
             file_name += f"_{hex_color2[1:]}"
         file_name += ".png"
-
+        increment_counter()
         return send_file(
             img_buffer,
             mimetype="image/png",
