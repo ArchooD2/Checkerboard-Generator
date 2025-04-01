@@ -1,11 +1,25 @@
 import pytest
 from PIL import Image
-from helper import (
-    generate_checkerboard_image,
-    generate_chevron_image,
-    generate_diagonal_image,
-    generate_stripe_image
-)
+try:
+    # If running with Flask CLI (as a package)
+    from ..helper import (
+        generate_checkerboard_image,
+        generate_chevron_image,
+        generate_diagonal_image,
+        generate_stripe_image,
+        generate_radial_pattern,
+        generate_diagonal_checker_image
+    )
+except ImportError:
+    # If running directly (e.g. `python app.py`)
+    from helper import (
+        generate_checkerboard_image,
+        generate_chevron_image,
+        generate_diagonal_image,
+        generate_stripe_image,
+        generate_radial_pattern,
+        generate_diagonal_checker_image
+    )
 
 # Common test colors
 COLOR1 = "#ffffff"
@@ -39,3 +53,11 @@ def test_stripe_generation_vertical():
 def test_stripe_invalid_orientation():
     with pytest.raises(ValueError):
         generate_stripe_image(COLOR1, COLOR2, stripe_width=20, orientation="diagonal")
+
+def test_radial_generation():
+    img = generate_radial_pattern(COLOR1, COLOR2, ring_width=20)
+    _assert_valid_image(img)
+
+def test_diagonal_checker_generation():
+    img = generate_diagonal_checker_image(COLOR1, COLOR2, stripe_width=20, square_size=50)
+    _assert_valid_image(img)
